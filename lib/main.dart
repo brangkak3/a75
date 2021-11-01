@@ -8,7 +8,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       home: HomePage(),
     );
   }
@@ -20,58 +20,37 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final countC = Get.put(CounterController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => OtherPage())),
+            onPressed: () => Get.to(() => TextPage()),
             icon: Icon(Icons.refresh),
           ),
         ],
       ),
       body: Center(
-        child: CountWidget(),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          countC.add();
-        },
+        child: Text('HOME PAGE'),
       ),
     );
   }
 }
 
-class CountWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GetBuilder<CounterController>(
-      initState: (_) => print('initstate'),
-      didChangeDependencies: (statu) => print('didChangeDependencies'),
-      didUpdateWidget: (oldWidget, state) => print('didUpdateWidget'),
-      dispose: (state) => print('dispose'),
-      builder: (c) => Text('Angka ${c.count}'),
-    );
-  }
-}
-
-class OtherPage extends StatelessWidget {
+class TextPage extends StatelessWidget {
+  final textC = Get.put(TextController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
+      body: TextField(
+        controller: textC.myC,
+      ),
     );
   }
 }
 
-class CounterController extends GetxController {
-  var count = 0;
-
-  void add() {
-    count++;
-    update();
-  }
+class TextController extends GetxController {
+  final myC = TextEditingController();
 }
